@@ -14,8 +14,9 @@
          <label for = "user_type">user_type</label><br>
          <select name="user_type" id="user_type">
             
-            {% for user_type in users_type %}
+            {% for user_type in users_type %} 
                <option value="{{ user_type.id}}">{{ user_type.description}}</option>
+                
             {% endfor %}
              
              
@@ -30,8 +31,26 @@
          <input type = "text" name = "email" placeholder = "email" /><br>
          <label for = "password ">password</label><br>
          <input type = "text" name = "password" placeholder = "password" /><br>
-        
-         
+         <label for = "nationality">nationality</label><br>
+         <select name="nationality" id="nationality">
+            
+            {% for nationality in nationality %}
+               <option value="{{ nationality.id}}">{{ nationality.description}}</option>
+            {% endfor %}
+
+         </select><br> 
+               
+
+         <label for = "gender">gender</label><br>
+         <select name="gender" id="gender">
+            
+            {% for gender in gender %}
+               <option value="{{ gender.id}}">{{ gender.description}}</option>
+            {% endfor %}
+              
+         </select><br>
+
+
          <input type = "submit" value = "Submit" />
       </form>
    </body>

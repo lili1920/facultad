@@ -13,6 +13,9 @@
       {%- endfor %}
       <h3>Users (<a href = "{{ url_for('new_user') }}">Add user
          </a>)</h3>
+
+
+
 		
       
       
@@ -25,7 +28,10 @@
                <th>firstname</th>
                <th>lastname</th>
                <th>email</th>
-                <th>password</th>
+               <th>password</th>
+               <th>nationality</th>
+               <th>gender</th>   
+               <th>delete</th> 
                
 
             </tr>
@@ -41,8 +47,12 @@
                   <td>{{ user.lastname }}</td>
                   <td>{{ user.email }}</td>
                   <td>{{ user.password }}</td>
+                  <td>{{ user.description }}</td>
+                  <td>{{ user.genero }}</td>
+                    <td><a href = "{{url_for('delete', id=user.id)}}"> Delete User
+         </a></td>
                </tr>
-                  
+               
                  
                  
             {% endfor %}
