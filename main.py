@@ -147,7 +147,7 @@ def edit(id):
 				return render_template('edit.html', users= user ,  nationality = Nationality.query.all(),gender = Gender.query.all())
 				
 			else:
-	      	 #se actualza un objeto estudiante  de la clase students
+	      	 #se actualza un objeto 
 				user.user_type = request.form['user_type']
 				user.dni = request.form['dni']
 				user.firstname = request.form['firstname']
