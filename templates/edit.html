@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+   <body>
+      <h3> Users- Flask SQLAlchemy example</h3>
+      <hr/>
+      
+      {%- for category, message in get_flashed_messages(with_categories = true) %}
+         <div class = "alert alert-danger">
+            {{ message }}
+         </div>
+      {%- endfor %}
+      
+      <form action = "{{ request.path }}" method = "post">
+         
+         <input type = "hidden"  name = "id"  value = {{users.id}} placeholder = "id" /><br>
+         <label for = "user_type">user_type</label><br>
+          <input type = "hidden"  name = "dni"  value = {{users.dni}} placeholder = "dni" /><br>
+         <label for = "dni">dni</label><br>
+
+         <input type = "text" name = "user_type" value = {{users.user_type}} placeholder = "user_type" /><br>
+         <label for = "firstname">firstname</label><br>
+         <input type = "text" name = "firstname" value = {{users.firstname}} placeholder = "firstname" /><br>
+         <label for = "lastname">lastname</label><br>
+         <input type = "text" name = "lastname" value = {{users.lastname}} placeholder = "lastname" /><br>
+
+         <label for = "password">password</label><br>
+         <textarea name = "password"  placeholder = "password">{{users.password}}</textarea><br>
+
+         
+         <label for = "nationality">nationality</label><br>
+         <select name="nationality" id="nationality">
+            
+            {% for nationality in nationality %}
+               <option value="{{ nationality.id}}">{{ nationality.description}}</option>
+            {% endfor %}
+
+         </select><br> 
+
+         <label for = "gender">gender</label><br>
+         <select name="gender" id="gender">
+            
+            {% for gender in gender %}
+               <option value="{{ gender.id}}">{{ gender.description}}</option>
+            {% endfor %}
+            
+
+         </select><br> 
+
+                  
+         <input type = "submit" value = "Submit" />
+      </form>
+   </body>
+</html>

@@ -32,6 +32,7 @@
                <th>nationality</th>
                <th>gender</th>   
                <th>delete</th> 
+               <th>edit</th> 
                
 
             </tr>
@@ -50,7 +51,9 @@
                   <td>{{ user.description }}</td>
                   <td>{{ user.genero }}</td>
                     <td><a href = "{{url_for('delete', id=user.id)}}"> Delete User
-         </a></td>
+                  </a></td>
+                   <td><a href = "{{url_for('edit', id=user.id)}}"> Edit User
+                  </a></td>
                </tr>
                
                  

@@ -68,7 +68,7 @@ class Gender (db.Model):
 def show_users():
 		
 		
-		return render_template('show_users.html', users = Users.query
+		return render_template('show_users.html',users = Users.query
 			.join(Nationality, Users.nationality==Nationality.id)
 			.join(Gender, Users.gender==Gender.id)
 			.add_columns(Users.id,
@@ -114,10 +114,62 @@ def delete(id):
 		 db.session.commit()
 		 flash ('borro el usuario:')
 		 flash (user.firstname)
-		 return render_template('show_users.html', users= Users.query.all())
+		 return render_template('show_users.html',users = Users.query
+			.join(Nationality, Users.nationality==Nationality.id)
+			.join(Gender, Users.gender==Gender.id)
+			.add_columns(Users.id,
+					 	Users.user_type, 
+						Users.email, 
+						Users.dni,
+					 	Users.firstname, 
+						Users.lastname, 
+						Users.password,
+					 	Nationality.description,
+					 	Gender.description.label("genero")  ) )
 		else:
 		 flash('No existe ese id', 'error')		
 		 return redirect(url_for('show_users'))
+
+
+@app.route('/edit/<int:id>', methods = ['GET', 'POST'])
+def edit(id):
+	
+		
+		#cuando entra por POST
+		if request.method == 'POST':
+			#aca recupera de la tabla el usuario con ese id de la base de datos
+			user = Users.query.filter_by(id=request.form['id']).first()
+
+	   	  # chequea que no lleguen vacios los campos 
+			if not request.form['user_type'] or not request.form['dni']or not request.form['firstname']or not request.form['lastname'] or not request.form['password'] or not request.form['nationality']or not request.form['gender']:
+				flash('Please enter all the fields', 'error')
+				user = Users.query.filter_by(id=id).first()
+				return render_template('edit.html', users= user ,  nationality = Nationality.query.all(),gender = Gender.query.all())
+				
+			else:
+	      	 #se actualza un objeto estudiante  de la clase students
+				user.user_type = request.form['user_type']
+				user.dni = request.form['dni']
+				user.firstname = request.form['firstname']
+				user.lastname = request.form['lastname']
+				user.password = request.form['password'] 
+				user.nationality = request.form['nationality'] 
+				user.gender = request.form['gender']
+	         #aca se actualiza 
+				
+				db.session.commit()
+	         
+				flash('Record was successfully added')
+				return redirect(url_for('show_users'))
+		#esto hace cuando viene del GET		
+		#cuando entra por GET hace :
+		else:
+
+			user = Users.query.filter_by(id=id).first()
+			return render_template('edit.html', users = user , nationality = Nationality.query.all(),gender = Gender.query.all())	
+
+	
+		    
 
 	
 		    
