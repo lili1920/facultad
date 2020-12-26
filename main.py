@@ -64,6 +64,22 @@ class Gender (db.Model):
 
 		self.description = description		
 
+class Materia (db.Model):
+	id = db.Column('id', db.Integer(), primary_key = True)
+	description = db.Column (db.String(20))
+
+	def __init__(self, description):
+		self.description = description	
+
+class User_materia (db.Model):
+	id = db.Column('id', db.Integer(), primary_key = True)
+	id_user = db.Column(db.Integer())
+	id_materia = db.Column (db.Integer())
+
+	def __init__(self, id_user, id_materia):
+		self.id_user = id_user	
+		self.id_materia = id_materia
+
 @app.route('/show_users')
 def show_users():
 		
@@ -102,7 +118,7 @@ def new_user():
 				return redirect(url_for('show_users'))
 
 		return render_template('new_user.html',users_type = User_type.query.all(), nationality = Nationality.query.all(), gender = Gender.query.all() )
-	
+
 
 @app.route('/delete/<int:id>')
 def delete(id):
@@ -169,10 +185,106 @@ def edit(id):
 			return render_template('edit.html', users = user , nationality = Nationality.query.all(),gender = Gender.query.all())	
 
 	
-		    
+@app.route('/show_materias')
+def show_materias():
+		
+			return render_template('show_materias.html', materias = Materia.query.all() )
+		
 
 	
-		    
+@app.route('/new_materia', methods = ['GET', 'POST'])
+def new_materia():
+			# este if solo entra cuando se apreta el boton submit	
+		if request.method == 'POST':
+			   	  # chequea que no lleguen vacios los campos del nuevo 
+			if  not request.form['description']:
+				flash('Please enter all the fields', 'error')
+			else:
+	      	 #se crea un objeto 
+				materia = Materia( request.form['description'])
+	         #aca se graba en la base datos 
+				   
+				db.session.add(materia)
+				db.session.commit()
+					         
+				flash('Record was successfully added')
+				return redirect(url_for('show_materias'	))
+
+		return render_template('new_materia.html' )
+		
+
+
+@app.route('/delete_materia/<int:id>')
+def delete_materia(id):
+	
+		materia = Materia.query.filter_by(id=id).first()
+		
+		if materia is not None:	 
+		 materia = Materia.query.get(id)
+		 db.session.delete(materia)
+		 db.session.commit()
+		 flash ('borro la materia:')
+		 flash (materia.description)
+		 return render_template('show_materias.html', materias = Materia.query.all())
+		else:
+		 flash('No existe ese id', 'error')		
+		 return redirect(url_for('show_materias'))
+
+
+@app.route('/editar_materia/<int:id>', methods = ['GET', 'POST'])
+def editar_materia(id):
+	
+	
+		#cuando entra por POST
+		if request.method == 'POST':
+			
+			description = Materia.query.filter_by(id=request.form['id']).first()
+	 	 
+			if not request.form['description']:
+				flash('Please enter all the fields', 'error')
+				description = Materia.query.filter_by(id=id).first()
+				return render_template('editar_materia.html', materias = description)
+				
+			else:
+	     
+				
+				description.description = request.form['description']
+				
+	         		
+				db.session.commit()
+	         
+				flash('Record was successfully added')
+				return redirect(url_for('show_materias'))
+
+		else:
+
+			description = Materia.query.filter_by(id=id).first()
+			return render_template('editar_materia.html', materias = description)
+
+
+
+@app.route('/new_inscripcion', methods = ['GET', 'POST'])
+def new_inscripcion():
+
+		if request.method == 'POST':
+			   	  # chequea que no lleguen vacios los campos del nuevo user
+			
+	      	 #se crea un objeto 
+				user_materia = User_materia( request.form['id_user'], request.form['id_materia'])
+	         #aca se graba en la base datos 
+				     
+				db.session.add(user_materia)
+
+				db.session.commit()
+				
+	         
+				flash('Record was successfully added')
+				return redirect(url_for('show_users'))
+
+		return render_template('new_inscripcion.html',users = Users.query.all(), materias= Materia.query.all() )
+
+
+
 
 if __name__ == '__main__':
    app.run(debug=True)
