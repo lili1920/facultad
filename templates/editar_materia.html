@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+   <body>Materia- Flask SQLAlchemy example</h3>
+      <hr/>
+      
+      {%- for category, message in get_flashed_messages(with_categories = true) %}
+         <div class = "alert alert-danger">
+            {{ message }}
+         </div>
+      {%- endfor %}
+      
+      <form action = "{{ request.path }}" method = "post">
+         
+         <input type = "hidden"  name = "id"  value = {{materias.id}} placeholder = "id" /><br>
+         
+         <label for = "description">description</label><br>
+         <input type = "text" name = "description" value = {{materias.description}} placeholder = "description" /><br>
+           
+          
+         <input type = "submit" value = "Submit" />
+      </form>
+   </body>
+</html>

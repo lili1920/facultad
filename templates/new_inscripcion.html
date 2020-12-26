@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+   <body>
+      <h3>Users - Flask SQLAlchemy example</h3>
+      <hr/>
+      
+      {%- for category, message in get_flashed_messages(with_categories = true) %}
+         <div class = "alert alert-danger">
+            {{ message }}
+         </div>
+      {%- endfor %}
+      
+      <form action = "{{ request.path }}" method = "post">
+         <label for = "user">user</label><br>
+         <select name="id_user" id="id_user">
+            
+            {% for user in users %} 
+               <option value="{{ user.id}}">{{ user.firstname}} {{ user.lastname}}</option>
+                
+            {% endfor %}
+             
+             
+         </select><br>
+         
+         <label for = "materia">materia</label><br>
+         <select name="id_materia" id="id_materia">
+            
+            {% for materia in materias %}
+               <option value="{{ materia.id}}">{{ materia.description}}</option>
+            {% endfor %}
+
+         </select><br> 
+             
+        
+              
+      
+
+
+         <input type = "submit" value = "Submit" />
+      </form>
+   </body>
+</html>
